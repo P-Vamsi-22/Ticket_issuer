@@ -86,3 +86,13 @@ def test_missing_status_returns_400(client):
 def test_status_change_for_unknown_ticket_returns_404(client):
     response = client.patch("/api/tickets/9999/status", json={"status": "Closed"})
     assert response.status_code == 404
+
+
+def test_non_string_title_returns_400(client):
+    response = client.post("/api/tickets", json={"title": 123})
+    assert response.status_code == 400
+
+
+def test_empty_request_body_returns_400(client):
+    response = client.post("/api/tickets", data="", content_type="application/json")
+    assert response.status_code == 400
